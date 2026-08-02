@@ -1,0 +1,114 @@
+export interface IBpmnGenerationOptions {
+  formatXml?: boolean;
+  applyAutoLayout?: boolean;
+}
+
+export interface IContractToBpmnService {
+  /**
+   * Compiles a resolved Contract AST into a fully compliant BPMN 2.0 XML string.
+   */
+  generateXML(ast: ContractFlowAST, options?: IBpmnGenerationOptions): Promise<string>;
+
+  /**
+   * Optional: Expose the raw intermediate translation if you need to validate
+   * the logical mapping before rendering it to XML.
+   */
+  validateTranslation(ast: ContractFlowAST): Promise<boolean>;
+}
+
+// The abstract coordinates your auto-layout engine will calculate
+export interface LayoutCoordinates {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface EdgeWaypoints {
+  sourceId: string;
+  targetId: string;
+  waypoints: { x: number, y: number }[];
+}
+
+// A clean representation of the contract parties
+export interface Party {
+  name: string;
+}
+
+export type InternalProcessEventName = 'Start' | 'Fulfill' | 'Breach';
+
+type ProcessStepInputBase = {
+  id: string;
+  name: string;
+  annotation?: string;
+};
+
+export type StartEventStepInput = ProcessStepInputBase & {
+  kind: 'event';
+  event: 'Start';
+  nextSteps?: ProcessStep[];
+};
+
+export type EndEventStepInput = ProcessStepInputBase & {
+  kind: 'event';
+  event: 'Fulfill' | 'Breach';
+};
+
+type TaskFallbackStepInput =
+  | { fallbackStep: ProcessStep; fallbackQuestion: string }
+  | { fallbackStep?: never; fallbackQuestion?: never };
+
+export type TaskStepInput = ProcessStepInputBase & TaskFallbackStepInput & {
+  kind: 'task';
+  initiatorName: string;
+  recipientName: string;
+  nextSteps?: ProcessStep[];
+};
+
+export type ProcessStepInput = StartEventStepInput | EndEventStepInput | TaskStepInput;
+
+export class ProcessStep {
+  id: string;
+  kind: 'event' | 'task';
+  event?: InternalProcessEventName;
+  name: string;
+  annotation?: string;
+  initiatorName?: string;
+  recipientName?: string;
+  nextSteps: ProcessStep[];
+  fallbackStep?: ProcessStep;
+  fallbackQuestion?: string;
+
+  constructor(input: ProcessStepInput) {
+    this.id = input.id;
+    this.kind = input.kind;
+    this.event = input.kind === 'event' ? input.event : undefined;
+    this.name = input.name;
+    this.annotation = input.annotation;
+    this.initiatorName = input.kind === 'task' ? input.initiatorName : undefined;
+    this.recipientName = input.kind === 'task' ? input.recipientName : undefined;
+    this.nextSteps = input.kind === 'task' || input.event === 'Start' ? input.nextSteps ?? [] : [];
+    this.fallbackStep = input.kind === 'task' ? input.fallbackStep : undefined;
+    this.fallbackQuestion = input.kind === 'task' ? input.fallbackQuestion : undefined;
+  }
+}
+
+export interface ContractFlowAST {
+  name: string;
+  parties: Party[];
+  steps: ProcessStep[];
+}
+
+export interface IAutoLayoutEngine {
+  /**
+   * Takes a raw semantic graph of nodes/edges and calculates spatial coordinates.
+   * (You'd likely implement this using a graph library like ELK.js or Dagre)
+   */
+  calculateLayout(
+    nodes: { id: string; width: number; height: number }[],
+    edges: { id: string; source: string; target: string }[]
+  ): {
+    nodeBounds: Record<string, LayoutCoordinates>;
+    edgeRoutes: Record<string, EdgeWaypoints>;
+  };
+}
