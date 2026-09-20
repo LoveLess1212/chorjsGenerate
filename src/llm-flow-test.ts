@@ -4,7 +4,7 @@ import { createContractFlowAST } from './interface';
 import { OpenAIContractFlowClient } from './services/ai/openai-contract-flow-client';
 
 const SAMPLE_CONTRACT_TEXT = `
-Jade Hotel will provide a room with a balcony and a view of the sea. If the hotel cannot arrange a sea view room as promised, it shall arrange an alternative room with a luxurious interior design, or a king-size double bed. If this compensation option is unavailable, Jade Hotel will offer two adult members of the tourist family free access to the hotel's spa during their stay. If neither of these compensations could be made, the tourist is entitled to a 50% discount on her accommodation at Jade Hotel upon checkout.
+To ensure your vehicle is ready upon arrival, we recommend booking in advance so we can coordinate with our local garages. We always aim to provide the exact vehicle class you reserved. In the rare event that your requested model is unavailable, we will automatically upgrade you to a higher model within the same segment in a neutral color at no extra charge. If an upgrade isn't available, we will provide a comparable vehicle class in a neutral color, waive all [Trusted Insurer] insurance fees, and include any requested accessories (like child safety seats) for free. Finally, if we cannot deliver a qualifying vehicle within 120 minutes of your arrival, you will receive a compensation package from [Trusted Insurer], scaled according to your membership tier.
 `;
 
 async function runLlmFlowTest(): Promise<void> {

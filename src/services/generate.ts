@@ -142,6 +142,7 @@ export class ContractToBpmnService implements IContractToBpmnService {
     // Wrap everything in the Choreography element
     const choreography = this.create('bpmn:Choreography', {
       id: generateId('Choreography'),
+      name: ast.name,
       participants,
       messageFlows,
       flowElements
@@ -162,6 +163,109 @@ export class ContractToBpmnService implements IContractToBpmnService {
     await this.writeGeneratedFile(ast.name, xml);
 
     return xml;
+  }
+
+  async parseXML(xml: string): Promise<ContractFlowAST> {
+    const { rootElement } = await this.moddle.fromXML(xml);
+    const definitions = rootElement as any;
+    const choreography = definitions.rootElements?.find((element: any) => element.$type === 'bpmn:Choreography');
+
+    if (!choreography) {
+      throw new Error('BPMN XML does not contain a choreography');
+    }
+
+    const flowElements = choreography.flowElements ?? [];
+    const artifacts = choreography.artifacts ?? [];
+    const nodes = flowElements.filter((element: any) =>
+      element.$type === 'bpmn:StartEvent' ||
+      element.$type === 'bpmn:EndEvent' ||
+      element.$type === 'bpmn:ChoreographyTask'
+    );
+    const gateways = flowElements.filter((element: any) => element.$type === 'bpmn:ExclusiveGateway');
+    const associations = artifacts.filter((element: any) => element.$type === 'bpmn:Association');
+    const artifactById = new Map(artifacts.map((element: any) => [this.getReferenceId(element), element]));
+    const stepByBpmnId = new Map<string, ProcessStep>();
+
+    nodes.forEach((node: any) => {
+      const nodeId = this.getReferenceId(node)!;
+      const internalId = this.getReferenceId(node) ?? generateId('ImportedStep');
+
+      const annotation = associations
+        .filter((association: any) => this.getAssociationReferenceId(association, 'sourceRef') === nodeId)
+        .map((association: any) => {
+          const targetRef = association.targetRef ?? association.$attrs?.targetRef;
+          return targetRef?.text ?? (artifactById.get(this.getReferenceId(targetRef) ?? '') as any)?.text;
+        })
+        .find((text: any): text is string => typeof text === 'string');
+      const step = node.$type === 'bpmn:ChoreographyTask'
+        ? new ProcessStep({
+          id: internalId,
+          kind: 'task',
+          name: node.name ?? '',
+          annotation,
+          initiatorName: node.initiatingParticipantRef?.name ?? '',
+          recipientName: node.participantRef?.find((participant: any) => participant !== node.initiatingParticipantRef)?.name ?? ''
+        })
+        : new ProcessStep({
+          id: internalId,
+          kind: 'event',
+          event: node.$type === 'bpmn:StartEvent'
+            ? 'Start'
+            : node.eventDefinitions?.some((definition: any) => definition.$type === 'bpmn:TerminateEventDefinition')
+              ? 'Fulfill'
+              : 'Breach',
+          name: node.name ?? '',
+          annotation
+        });
+
+      stepByBpmnId.set(nodeId, step);
+    });
+
+    const sequenceFlows = flowElements.filter((element: any) => element.$type === 'bpmn:SequenceFlow');
+    const outgoing = (sourceId: string) => sequenceFlows.filter((flow: any) => this.getReferenceId(flow.sourceRef) === sourceId);
+
+    nodes.forEach((node: any) => {
+      const nodeId = this.getReferenceId(node)!;
+      const step = stepByBpmnId.get(nodeId)!;
+      const flows = outgoing(nodeId);
+
+      if (node.$type === 'bpmn:ChoreographyTask' && flows.length === 1 && gateways.some((gateway: any) => this.getReferenceId(gateway) === this.getReferenceId(flows[0].targetRef))) {
+        const gateway = flows[0].targetRef;
+        const gatewayId = this.getReferenceId(gateway)!;
+        const yesFlow = outgoing(gatewayId).find((flow: any) => flow.name === 'yes');
+        const noFlow = outgoing(gatewayId).find((flow: any) => flow.name === 'no');
+        step.nextSteps = yesFlow ? [this.requireStep(stepByBpmnId, this.getReferenceId(yesFlow.targetRef)!)] : [];
+        step.fallbackStep = noFlow ? this.requireStep(stepByBpmnId, this.getReferenceId(noFlow.targetRef)!) : undefined;
+        step.fallbackQuestion = gateway.name;
+      } else {
+        step.nextSteps = flows
+          .map((flow: any) => stepByBpmnId.get(this.getReferenceId(flow.targetRef)!))
+          .filter((target: ProcessStep | undefined): target is ProcessStep => Boolean(target));
+      }
+    });
+
+    return {
+      name: choreography.name ?? '',
+      parties: (choreography.participants ?? []).map((participant: any) => ({ name: participant.name ?? '' })),
+      steps: nodes.map((node: any) => this.requireStep(stepByBpmnId, this.getReferenceId(node)!))
+    };
+  }
+
+  private getReferenceId(reference: any): string | undefined {
+    return typeof reference === 'string' ? reference : reference?.id ?? reference?.$attrs?.id;
+  }
+
+  private getAssociationReferenceId(association: any, referenceName: 'sourceRef' | 'targetRef'): string | undefined {
+    return this.getReferenceId(association[referenceName] ?? association.$attrs?.[referenceName]);
+  }
+
+  private requireStep(stepByBpmnId: Map<string, ProcessStep>, bpmnId: string): ProcessStep {
+    const step = stepByBpmnId.get(bpmnId);
+    if (!step) {
+      throw new Error(`BPMN flow points to unknown process step ${bpmnId}`);
+    }
+
+    return step;
   }
 
   // --- Helper Methods to reduce repetition ---
@@ -480,9 +584,16 @@ export class ContractToBpmnService implements IContractToBpmnService {
     switch (step.event) {
       case 'Fulfill':
         const termDef = this.create('bpmn:TerminateEventDefinition', { id: generateId('TerminateEventDefinition') });
-        return this.create('bpmn:EndEvent', { id, name: step.name, eventDefinitions: [termDef] });
+        return this.create('bpmn:EndEvent', {
+          id,
+          name: step.name,
+          eventDefinitions: [termDef]
+        });
       case 'Breach':
-        return this.create('bpmn:EndEvent', { id, name: step.name });
+        return this.create('bpmn:EndEvent', {
+          id,
+          name: step.name,
+        });
       default:
         // Handle trigger start event
         const condition = this.create('bpmn:FormalExpression');
@@ -491,7 +602,11 @@ export class ContractToBpmnService implements IContractToBpmnService {
           condition
         });
 
-        return this.create('bpmn:StartEvent', { id, name: step.name, eventDefinitions: [eventDefinition] });
+        return this.create('bpmn:StartEvent', {
+          id,
+          name: step.name,
+          eventDefinitions: [eventDefinition]
+        });
     }
   }
 

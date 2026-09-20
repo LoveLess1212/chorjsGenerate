@@ -1,6 +1,6 @@
 import { ContractToBpmnService } from './services/generate';
-import { ContractFlowInput } from './ai/external-interface';
-import { createContractFlowAST } from './interface';
+import { ContractFlowInput, createContractFlowAST, StartEventStepInput } from './interface';
+import { generateDeonticLogic } from './services/deontic';
 
 const hotelCompensationInput: ContractFlowInput = {
   name: 'Hotel compensation flow',
@@ -81,6 +81,10 @@ async function generateDiagram() {
   const service = new ContractToBpmnService();
   const ast = createContractFlowAST(hotelCompensationInput);
   await service.generateXML(ast, { applyAutoLayout: true });
+
+  console.log(
+    generateDeonticLogic(ast.steps[0] as StartEventStepInput)
+  );
 
   // console.log(xml);
 }

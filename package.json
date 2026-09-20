@@ -8,6 +8,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:roundtrip": "tsx src/round-trip-test.ts",
     "generate": "tsx src/test.ts",
     "llm:flow": "tsx src/llm-flow-test.ts"
   },
