@@ -1,6 +1,5 @@
 import { strict as assert } from 'node:assert';
-import { ContractToBpmnService } from './services/generate';
-import { ContractFlowInput, createContractFlowAST } from './interface';
+import { ContractFlowInput, ContractToBpmnService, createContractFlowAST } from '..';
 
 const input: ContractFlowInput = {
   name: 'Round trip contract',

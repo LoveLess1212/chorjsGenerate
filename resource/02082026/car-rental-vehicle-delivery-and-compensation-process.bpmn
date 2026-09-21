@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions1txklap" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message083d27j" />
+  <bpmn:message id="Message140gvb2" />
+  <bpmn:message id="Message1a5qn97" />
+  <bpmn:message id="Message1sv9pia" />
+  <bpmn:choreography id="Choreography15n8qab">
+    <bpmn:participant id="Participant0eo7uy1" name="Car Renters" />
+    <bpmn:participant id="Participant1f2z1kv" name="Car Booking Company" />
+    <bpmn:participant id="Participant0jri5st" name="Trusted Insurer" />
+    <bpmn:messageFlow id="MessageFlow0fn8fgu" sourceRef="Participant1f2z1kv" targetRef="Participant0eo7uy1" messageRef="Message083d27j" />
+    <bpmn:messageFlow id="MessageFlow0v1hqcm" sourceRef="Participant1f2z1kv" targetRef="Participant0eo7uy1" messageRef="Message140gvb2" />
+    <bpmn:messageFlow id="MessageFlow0vn87w7" sourceRef="Participant1f2z1kv" targetRef="Participant0eo7uy1" messageRef="Message1a5qn97" />
+    <bpmn:messageFlow id="MessageFlow17576a5" sourceRef="Participant0jri5st" targetRef="Participant0eo7uy1" messageRef="Message1sv9pia" />
+    <bpmn:textAnnotation id="TextAnnotation1wdod8j">
+      <bpmn:text>Deliver the exact vehicle class the renter requested in booking</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1wsfahs" sourceRef="ChoreographyTask1y65w5o" targetRef="TextAnnotation1wdod8j" />
+    <bpmn:textAnnotation id="TextAnnotation0kzzfji">
+      <bpmn:text>Provide an upgraded model within the same segment in a neutral color</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association014u5td" sourceRef="ChoreographyTask111r9fp" targetRef="TextAnnotation0kzzfji" />
+    <bpmn:textAnnotation id="TextAnnotation06nk93e">
+      <bpmn:text>Provide a car of comparable class in neutral color; waive all insurance costs from Trusted Insurer; offer free accessories (e.g., child safety seats)</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0vnj1zw" sourceRef="ChoreographyTask1sfrcm7" targetRef="TextAnnotation06nk93e" />
+    <bpmn:textAnnotation id="TextAnnotation0ijucd6">
+      <bpmn:text>Compensation from Trusted Insurer scaled to customer's platform tier</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0s17sjt" sourceRef="ChoreographyTask1wqkw3n" targetRef="TextAnnotation0ijucd6" />
+    <bpmn:startEvent id="Event1awbkgp" name="Car renter arrives with booking">
+      <bpmn:outgoing>Flow1nvipb1</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition03v2j9r">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow1nvipb1" sourceRef="Event1awbkgp" targetRef="ChoreographyTask1y65w5o" />
+    <bpmn:choreographyTask id="ChoreographyTask1y65w5o" name="Deliver requested vehicle class" initiatingParticipantRef="Participant1f2z1kv">
+      <bpmn:incoming>Flow1nvipb1</bpmn:incoming>
+      <bpmn:outgoing>Flow0ckrful</bpmn:outgoing>
+      <bpmn:participantRef>Participant1f2z1kv</bpmn:participantRef>
+      <bpmn:participantRef>Participant0eo7uy1</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0fn8fgu</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0ckrful" sourceRef="ChoreographyTask1y65w5o" targetRef="Gateway002eywt" />
+    <bpmn:sequenceFlow id="Flow0v2j3kb" name="yes" sourceRef="Gateway002eywt" targetRef="Event1eny1x2" />
+    <bpmn:sequenceFlow id="Flow07rk9zh" name="no" sourceRef="Gateway002eywt" targetRef="ChoreographyTask111r9fp" />
+    <bpmn:exclusiveGateway id="Gateway002eywt" name="Is an upgraded model available?">
+      <bpmn:incoming>Flow0ckrful</bpmn:incoming>
+      <bpmn:outgoing>Flow0v2j3kb</bpmn:outgoing>
+      <bpmn:outgoing>Flow07rk9zh</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event1eny1x2" name="Renter receives requested vehicle">
+      <bpmn:incoming>Flow0v2j3kb</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0fb8rnk" />
+    </bpmn:endEvent>
+    <bpmn:choreographyTask id="ChoreographyTask111r9fp" name="Provide upgraded vehicle within same segment" initiatingParticipantRef="Participant1f2z1kv">
+      <bpmn:incoming>Flow07rk9zh</bpmn:incoming>
+      <bpmn:outgoing>Flow0dkm0i7</bpmn:outgoing>
+      <bpmn:participantRef>Participant1f2z1kv</bpmn:participantRef>
+      <bpmn:participantRef>Participant0eo7uy1</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0v1hqcm</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0dkm0i7" sourceRef="ChoreographyTask111r9fp" targetRef="Gateway1d3v8r5" />
+    <bpmn:sequenceFlow id="Flow0y77v3l" name="yes" sourceRef="Gateway1d3v8r5" targetRef="Event1iwcmmo" />
+    <bpmn:sequenceFlow id="Flow1xyq4uk" name="no" sourceRef="Gateway1d3v8r5" targetRef="ChoreographyTask1sfrcm7" />
+    <bpmn:exclusiveGateway id="Gateway1d3v8r5" name="Is a comparable vehicle available?">
+      <bpmn:incoming>Flow0dkm0i7</bpmn:incoming>
+      <bpmn:outgoing>Flow0y77v3l</bpmn:outgoing>
+      <bpmn:outgoing>Flow1xyq4uk</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event1iwcmmo" name="Renter receives upgraded vehicle">
+      <bpmn:incoming>Flow0y77v3l</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition12v4o7c" />
+    </bpmn:endEvent>
+    <bpmn:choreographyTask id="ChoreographyTask1sfrcm7" name="Provide comparable vehicle with perks" initiatingParticipantRef="Participant1f2z1kv">
+      <bpmn:incoming>Flow1xyq4uk</bpmn:incoming>
+      <bpmn:outgoing>Flow19pwy5j</bpmn:outgoing>
+      <bpmn:participantRef>Participant1f2z1kv</bpmn:participantRef>
+      <bpmn:participantRef>Participant0eo7uy1</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0vn87w7</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow19pwy5j" sourceRef="ChoreographyTask1sfrcm7" targetRef="Gateway1urzhl8" />
+    <bpmn:sequenceFlow id="Flow0oz4k1c" name="yes" sourceRef="Gateway1urzhl8" targetRef="Event1d8vbgm" />
+    <bpmn:sequenceFlow id="Flow001bwze" name="no" sourceRef="Gateway1urzhl8" targetRef="ChoreographyTask1wqkw3n" />
+    <bpmn:exclusiveGateway id="Gateway1urzhl8" name="Is a compliant vehicle deliverable within 120 minutes?">
+      <bpmn:incoming>Flow19pwy5j</bpmn:incoming>
+      <bpmn:outgoing>Flow0oz4k1c</bpmn:outgoing>
+      <bpmn:outgoing>Flow001bwze</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event1d8vbgm" name="Renter receives comparable vehicle with perks">
+      <bpmn:incoming>Flow0oz4k1c</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0wb3au6" />
+    </bpmn:endEvent>
+    <bpmn:choreographyTask id="ChoreographyTask1wqkw3n" name="Provide compensation package" initiatingParticipantRef="Participant0jri5st">
+      <bpmn:incoming>Flow001bwze</bpmn:incoming>
+      <bpmn:outgoing>Flow1amkfad</bpmn:outgoing>
+      <bpmn:participantRef>Participant0jri5st</bpmn:participantRef>
+      <bpmn:participantRef>Participant0eo7uy1</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow17576a5</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow1amkfad" sourceRef="ChoreographyTask1wqkw3n" targetRef="Gateway1yotmai" />
+    <bpmn:sequenceFlow id="Flow1uh16sz" name="yes" sourceRef="Gateway1yotmai" targetRef="Event187krsz" />
+    <bpmn:sequenceFlow id="Flow1ja1quv" name="no" sourceRef="Gateway1yotmai" targetRef="Event1xtz6lb" />
+    <bpmn:exclusiveGateway id="Gateway1yotmai" name="Is compensation available?">
+      <bpmn:incoming>Flow1amkfad</bpmn:incoming>
+      <bpmn:outgoing>Flow1uh16sz</bpmn:outgoing>
+      <bpmn:outgoing>Flow1ja1quv</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event187krsz" name="Renter receives compensation package">
+      <bpmn:incoming>Flow1uh16sz</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0w9jrub" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event1xtz6lb" name="Breach - no vehicle or compensation provided">
+      <bpmn:incoming>Flow1ja1quv</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram03df63l">
+    <bpmndi:BPMNPlane id="BPMNPlane1wvw2n6" bpmnElement="Choreography15n8qab">
+      <bpmndi:BPMNShape id="BPMNShape02876mm" bpmnElement="Event1awbkgp">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape12com8m" bpmnElement="ChoreographyTask1y65w5o">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0j1j3rp" bpmnElement="Participant1f2z1kv" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape12com8m">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1q2ua59" bpmnElement="Participant0eo7uy1" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape12com8m">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape08gzijv" bpmnElement="Gateway002eywt" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1k9l7q1" bpmnElement="Event1eny1x2">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1spkm2m" bpmnElement="ChoreographyTask111r9fp">
+        <dc:Bounds x="475" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0hiw9t6" bpmnElement="Participant1f2z1kv" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1spkm2m">
+        <dc:Bounds x="475" y="170" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0yd0bs3" bpmnElement="Participant0eo7uy1" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1spkm2m">
+        <dc:Bounds x="475" y="230" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape02tiy3b" bpmnElement="Gateway1d3v8r5" isMarkerVisible="true">
+        <dc:Bounds x="650" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1t6fn9x" bpmnElement="Event1iwcmmo">
+        <dc:Bounds x="807" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1rfzoe2" bpmnElement="ChoreographyTask1sfrcm7">
+        <dc:Bounds x="775" y="310" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ugzs22" bpmnElement="Participant1f2z1kv" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1rfzoe2">
+        <dc:Bounds x="775" y="310" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape13kp1rs" bpmnElement="Participant0eo7uy1" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1rfzoe2">
+        <dc:Bounds x="775" y="370" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0fr4rab" bpmnElement="Gateway1urzhl8" isMarkerVisible="true">
+        <dc:Bounds x="950" y="325" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1id0pu1" bpmnElement="Event1d8vbgm">
+        <dc:Bounds x="1107" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape03eibdg" bpmnElement="ChoreographyTask1wqkw3n">
+        <dc:Bounds x="1075" y="450" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1joti1m" bpmnElement="Participant0jri5st" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape03eibdg">
+        <dc:Bounds x="1075" y="450" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0srwpxd" bpmnElement="Participant0eo7uy1" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape03eibdg">
+        <dc:Bounds x="1075" y="510" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0867wl6" bpmnElement="Gateway1yotmai" isMarkerVisible="true">
+        <dc:Bounds x="1250" y="465" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0idyv2v" bpmnElement="Event187krsz">
+        <dc:Bounds x="1407" y="472" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0imfyp2" bpmnElement="Event1xtz6lb">
+        <dc:Bounds x="1407" y="612" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0zoym3n" bpmnElement="TextAnnotation1wdod8j">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0mver99" bpmnElement="TextAnnotation0kzzfji">
+        <dc:Bounds x="475" y="280" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1s2bbs2" bpmnElement="TextAnnotation06nk93e">
+        <dc:Bounds x="775" y="420" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0163dvq" bpmnElement="TextAnnotation0ijucd6">
+        <dc:Bounds x="1075" y="560" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge0xkzqq6" bpmnElement="Flow1nvipb1">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge06i7xa1" bpmnElement="Flow0ckrful">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1o68lm3" bpmnElement="Flow0v2j3kb">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1ekjpxn" bpmnElement="Flow07rk9zh">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="475" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1jl27sb" bpmnElement="Flow0dkm0i7">
+        <di:waypoint x="575" y="210" />
+        <di:waypoint x="650" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge05k7fir" bpmnElement="Flow0y77v3l">
+        <di:waypoint x="700" y="210" />
+        <di:waypoint x="807" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0tthwfn" bpmnElement="Flow1xyq4uk">
+        <di:waypoint x="675" y="235" />
+        <di:waypoint x="675" y="350" />
+        <di:waypoint x="775" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge13vly7r" bpmnElement="Flow19pwy5j">
+        <di:waypoint x="875" y="350" />
+        <di:waypoint x="950" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0v089k1" bpmnElement="Flow0oz4k1c">
+        <di:waypoint x="1000" y="350" />
+        <di:waypoint x="1107" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0yu0uhs" bpmnElement="Flow001bwze">
+        <di:waypoint x="975" y="375" />
+        <di:waypoint x="975" y="490" />
+        <di:waypoint x="1075" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0p3zak3" bpmnElement="Flow1amkfad">
+        <di:waypoint x="1175" y="490" />
+        <di:waypoint x="1250" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0m2srop" bpmnElement="Flow1uh16sz">
+        <di:waypoint x="1300" y="490" />
+        <di:waypoint x="1407" y="490" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1etns1a" bpmnElement="Flow1ja1quv">
+        <di:waypoint x="1275" y="515" />
+        <di:waypoint x="1275" y="630" />
+        <di:waypoint x="1407" y="630" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0zognij" bpmnElement="Association1wsfahs">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1swypwd" bpmnElement="Association014u5td">
+        <di:waypoint x="525" y="210" />
+        <di:waypoint x="575" y="315" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge19bv4xd" bpmnElement="Association0vnj1zw">
+        <di:waypoint x="825" y="350" />
+        <di:waypoint x="875" y="455" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1uvpcru" bpmnElement="Association0s17sjt">
+        <di:waypoint x="1125" y="490" />
+        <di:waypoint x="1175" y="595" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

@@ -1,6 +1,10 @@
-import { ContractToBpmnService } from './services/generate';
-import { ContractFlowInput, createContractFlowAST, StartEventStepInput } from './interface';
-import { generateDeonticLogic } from './services/deontic';
+import {
+  ContractFlowInput,
+  ContractToBpmnService,
+  createContractFlowAST,
+  generateDeonticLogic,
+  StartEventStepInput
+} from '..';
 
 const hotelCompensationInput: ContractFlowInput = {
   name: 'Hotel compensation flow',

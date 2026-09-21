@@ -1,16 +1,21 @@
 {
   "name": "chorjs-gen",
   "version": "1.0.0",
-  "description": "",
+  "description": "Generate BPMN choreography diagrams and deontic logic from contract flows",
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "test:roundtrip": "tsx src/round-trip-test.ts",
-    "generate": "tsx src/test.ts",
-    "llm:flow": "tsx src/llm-flow-test.ts"
+    "build": "tsc",
+    "typecheck": "tsc --noEmit",
+    "test:roundtrip": "tsx tests/round-trip.ts",
+    "generate": "tsx tests/generate.ts",
+    "llm:flow": "tsx tests/llm-flow.ts"
   },
   "dependencies": {
     "bpmn-auto-layout": "^1.3.0",

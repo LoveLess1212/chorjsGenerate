@@ -2,7 +2,7 @@ import * as fs from 'node:fs/promises';
 import * as path from 'node:path';
 import * as crypto from 'node:crypto';
 
-type LogPayload = Record<string, unknown>;
+export type LogPayload = Record<string, unknown>;
 
 export class LoggingService {
   private readonly sessionId: string;
