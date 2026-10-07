@@ -27,7 +27,7 @@
   },
   "devDependencies": {
     "@types/bpmn-moddle": "^10.0.0",
-    "@types/node": "^26.1.2",
+    "@types/node": "^26.6.4",
     "tsx": "^4.23.1",
     "typescript": "^7.0.2"
   }

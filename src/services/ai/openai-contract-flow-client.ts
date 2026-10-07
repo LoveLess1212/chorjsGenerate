@@ -3,7 +3,7 @@ import OpenAI from 'openai';
 import { zodResponseFormat } from 'openai/helpers/zod';
 import { ContractFlowInput } from './external-interface';
 import { SYS_PROMPT } from './prompt';
-import { ContractFlowInputSchema, normalizeContractFlowInput } from './contract-flow-schema';
+import { ContractFlowResponseSchema, normalizeContractFlowInput } from './contract-flow-schema';
 import { LoggingService } from '../logging-service';
 
 export interface GenerateContractFlowOptions {
@@ -29,7 +29,7 @@ export class OpenAIContractFlowClient {
   async generateContractFlow(
     contractText: string,
     options: GenerateContractFlowOptions = {}
-  ): Promise<ContractFlowInput> {
+  ): Promise<ContractFlowInput[]> {
     const model = options.model ?? process.env.OPENAI_MODEL ?? DEFAULT_MODEL;
     const startedAt = Date.now();
 
@@ -45,7 +45,7 @@ export class OpenAIContractFlowClient {
     try {
       const completion = await this.client.chat.completions.parse({
         model,
-        response_format: zodResponseFormat(ContractFlowInputSchema, 'contract_flow_input'),
+        response_format: zodResponseFormat(ContractFlowResponseSchema, 'contract_flow_response'),
         messages: [
           { role: 'system', content: SYS_PROMPT },
           { role: 'user', content: contractText }
@@ -56,8 +56,10 @@ export class OpenAIContractFlowClient {
       const parsed = message?.parsed;
 
       if (!parsed) {
-        throw new Error('OpenAI returned a response that could not be parsed as ContractFlowInput.');
+        throw new Error('OpenAI returned a response that could not be parsed as ContractFlowInput[].');
       }
+
+      const inputs = parsed.flows.map(normalizeContractFlowInput);
 
       await this.logger.log('openai.contract_flow.response', {
         provider: 'openai',
@@ -68,10 +70,10 @@ export class OpenAIContractFlowClient {
         usage: completion.usage,
         responseText,
         parsed,
-        normalized: normalizeContractFlowInput(parsed)
+        normalized: inputs
       });
 
-      return normalizeContractFlowInput(parsed);
+      return inputs;
     } catch (error) {
       await this.logger.log('openai.contract_flow.error', {
         provider: 'openai',

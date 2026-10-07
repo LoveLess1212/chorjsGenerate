@@ -1,6 +1,7 @@
 export * from './internal-interface';
 export * from './interface';
 export { OpenAIContractFlowClient } from './services/ai/openai-contract-flow-client';
+export { OpenAIContractFlowClientV2 } from './services/ai/openai-contract-flow-client-v2';
 export { generateDeonticLogic } from './services/deontic';
 export { ContractToBpmnService } from './services/generate';
 export { LoggingService } from './services/logging-service';

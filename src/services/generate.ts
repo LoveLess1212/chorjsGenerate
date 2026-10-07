@@ -620,9 +620,14 @@ export class ContractToBpmnService implements IContractToBpmnService {
 
   private async writeGeneratedFile(name: string, xml: string): Promise<void> {
     const outputDirectory = path.join('resource', this.formatDateFolder(new Date()));
-    const outputPath = path.join(outputDirectory, `${this.toFileName(name)}.bpmn`);
-
     await fs.mkdir(outputDirectory, { recursive: true });
+
+    const entries = await fs.readdir(outputDirectory, { withFileTypes: true });
+    const fileNumber = entries.filter(entry => entry.isFile()).length + 1;
+    const prefix = String(fileNumber).padStart(3, '0');
+    const outputPath = path.join(outputDirectory, `${prefix}-${this.toFileName(name)}.bpmn`);
+
+    console.log(`Writing generated BPMN XML to ${outputPath}...`);
     await fs.writeFile(outputPath, xml, 'utf8');
   }
 

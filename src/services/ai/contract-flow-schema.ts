@@ -31,7 +31,7 @@ const TaskStepDefinitionSchema = StepBaseSchema.extend({
   fallbackQuestion: z.string().nullable()
 });
 
-export const ContractFlowInputSchema = z.object({
+export const ContractFlowItemSchema = z.object({
   parties: z.array(PartySchema),
   steps: z.array(z.union([
     StartEventDefinitionSchema,
@@ -41,7 +41,11 @@ export const ContractFlowInputSchema = z.object({
   name: z.string()
 });
 
-export type ContractFlowInputFromSchema = z.infer<typeof ContractFlowInputSchema>;
+export const ContractFlowResponseSchema = z.object({
+  flows: z.array(ContractFlowItemSchema)
+});
+
+export type ContractFlowInputFromSchema = z.infer<typeof ContractFlowItemSchema>;
 
 export function normalizeContractFlowInput(input: ContractFlowInputFromSchema): ContractFlowInput {
   const stepNameById = new Map(input.steps.map(step => [step.id, step.name]));
