@@ -15,7 +15,9 @@
     "typecheck": "tsc --noEmit",
     "test:roundtrip": "tsx tests/round-trip.ts",
     "generate": "tsx tests/generate.ts",
-    "llm:flow": "tsx tests/llm-flow.ts"
+    "llm:flow": "tsx tests/llm-flow.ts",
+    "llm:flow:v2": "tsx tests/llm-flow-v2.ts",
+    "convert:json": "tsx tests/convert-json.ts"
   },
   "dependencies": {
     "bpmn-auto-layout": "^1.3.0",

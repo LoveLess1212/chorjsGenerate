@@ -1,0 +1,161 @@
+[
+  {
+    "operator": "obligation",
+    "name": "Primary Obligation",
+    "symbol": "O",
+    "description": "Baseline mandatory performance that satisfies the primary contract duty.",
+    "text_clues": [
+      "shall perform",
+      "must provide",
+      "is obligated to",
+      "will deliver",
+      "shall supply",
+      "agrees to install",
+      "is strictly required to"
+    ],
+    "ast_component": {
+      "id": "${unique step ID, e.g. step-1-deliver-components}",
+      "kind": "task",
+      "name": "${concise action verb phrase, e.g. Deliver ATP-passing engine components}",
+      "initiatorName": "${party legally obligated to perform, e.g. XYZ Parts}",
+      "recipientName": "${counterparty receiving performance or deliverable, e.g. Automobiles-X}",
+      "annotation": "${specific timeframe or operational trigger, e.g. Primary order placed; deliver on schedule}",
+      "fallbackQuestion": "${evaluative yes/no question whether primary duty was performed on schedule, e.g. Did components pass ATP and get delivered on time?}",
+      "fallbackStepId": "${ID of the intermediate remedy or cure step if this fails, or 'end-breach' if no cure exists}",
+      "nextStepIds": [
+        "${ID of the subsequent happy path step, or 'end-fulfill' if this satisfies the contract}"
+      ]
+    }
+  },
+  {
+    "operator": "contrary_to_duty",
+    "name": "Contrary-to-Duty (Failing Which / Remedy)",
+    "symbol": "X",
+    "description": "Secondary cure, replacement, or repair triggered when a prior obligation fails.",
+    "text_clues": [
+      "failing which",
+      "if fails to",
+      "shall deliver an identical replacement",
+      "must supply an alternative",
+      "must provide a functional replacement within",
+      "failure to remedy on-site results in",
+      "in case of defect, shall"
+    ],
+    "ast_component": {
+      "id": "${unique step ID, e.g. step-2-deliver-identical-replacement}",
+      "kind": "task",
+      "name": "${concise remedy or replacement action, e.g. Deliver identical replacement component within 12 hours}",
+      "initiatorName": "${party performing the cure or replacement, e.g. XYZ Parts}",
+      "recipientName": "${party receiving the remedy or replacement, e.g. Automobiles-X}",
+      "annotation": "${breach condition activating this cure, e.g. Triggered when primary component fails ATP}",
+      "fallbackQuestion": "${evaluative yes/no question whether this remedy was completed within the cure deadline, e.g. Was identical replacement delivered within 12 hours?}",
+      "fallbackStepId": "${ID of the next escalation remedy if this cure fails, or 'end-breach' if terminal}",
+      "nextStepIds": [
+        "${ID of next step on successful cure, or 'end-fulfill' if cure satisfies the contract}"
+      ]
+    }
+  },
+  {
+    "operator": "last_chance",
+    "name": "The Last Chance to Compensate",
+    "symbol": "*",
+    "description": "Final monetary settlement, maximum refund, or liquidated damages right before total uncompensated breach.",
+    "text_clues": [
+      "the last chance to compensate",
+      "failing which results in full refund plus liquidated damages",
+      "may apply a payment deduction",
+      "final compensatory settlement",
+      "as a last resort prior to contract breach"
+    ],
+    "ast_component": {
+      "id": "${unique step ID, e.g. step-3-issue-full-refund-and-damages}",
+      "kind": "task",
+      "name": "${terminal compensation or refund action, e.g. Issue 100% refund plus $500 liquidated damages}",
+      "initiatorName": "${party paying the final compensation or refund, e.g. Vendor-C}",
+      "recipientName": "${party receiving final payout, or deducting payment, e.g. Couple}",
+      "annotation": "${exhaustion condition triggering this final remedy, e.g. Prior remedy failed; final cure window of 5 business days}",
+      "fallbackQuestion": "${evaluative yes/no question whether final compensation was tendered, e.g. Was 100% refund and liquidated damages paid within 5 days?}",
+      "fallbackStepId": "end-breach",
+      "nextStepIds": [
+        "end-fulfill"
+      ]
+    }
+  },
+  {
+    "operator": "permission",
+    "name": "Permission (Optional Discretionary Right)",
+    "symbol": "P",
+    "description": "Optional privilege or right exercisable at a party's sole election; declining it preserves contract fulfillment without breach.",
+    "text_clues": [
+      "is permitted to",
+      "may at its option",
+      "holds the right to",
+      "at its sole election",
+      "optional request",
+      "has the privilege to"
+    ],
+    "ast_component": {
+      "id": "${unique step ID, e.g. step-opt-request-additional-spa-access}",
+      "kind": "task",
+      "name": "${optional or discretionary action, e.g. Request complimentary spa access}",
+      "initiatorName": "${party entitled to exercise the option, e.g. Guest}",
+      "recipientName": "${party responding to the option, e.g. Hotel}",
+      "annotation": "${window or terms governing this discretionary option, e.g. Discretionary option exercisable upon check-in}",
+      "fallbackQuestion": "${evaluative yes/no question whether the party elects to exercise this right, e.g. Does Guest elect to exercise complimentary spa access?}",
+      "fallbackStepId": "${ID of standard workflow continuation step when option is bypassed without penalty}",
+      "nextStepIds": [
+        "${ID of subsequent step when option is exercised}"
+      ]
+    }
+  },
+  {
+    "operator": "forbidden",
+    "name": "Forbidden (Negative Covenant / Prohibited Act)",
+    "symbol": "F",
+    "description": "Express prohibition against an action. Non-occurrence maintains fulfillment; occurrence triggers violation cure.",
+    "text_clues": [
+      "is strictly forbidden from",
+      "shall not",
+      "is prohibited from",
+      "must refrain from",
+      "covenants not to engage in"
+    ],
+    "ast_component": {
+      "id": "${unique step ID, e.g. step-neg-refrain-from-unauthorized-subcontracting}",
+      "kind": "task",
+      "name": "${negative covenant obligation, e.g. Refrain from unauthorized subcontracting}",
+      "initiatorName": "${party restricted by the covenant, e.g. Contractor}",
+      "recipientName": "${party protected by the covenant, e.g. Client}",
+      "annotation": "${scope of prohibition, e.g. Negative covenant effective throughout contract term}",
+      "fallbackQuestion": "${evaluative yes/no question whether covenant is observed without breach, e.g. Is negative covenant observed without unauthorized subcontracting?}",
+      "fallbackStepId": "${ID of penalty or cure step if prohibition is violated, e.g. step-pay-unauthorized-subcontracting-penalty}",
+      "nextStepIds": [
+        "${ID of next step on continued covenant compliance, or 'end-fulfill'}"
+      ]
+    }
+  },
+  {
+    "operator": "trigger",
+    "name": "Trigger Condition (Premise / Milestone Event)",
+    "symbol": "cond",
+    "description": "Contractual condition precedent, temporal milestone, or failure detection that initiates a service flow.",
+    "text_clues": [
+      "upon",
+      "prior to the wedding event",
+      "during the wedding event",
+      "if detected",
+      "whenever condition precedent occurs",
+      "on the scheduled delivery date"
+    ],
+    "ast_component": {
+      "id": "${unique event ID, e.g. start-event-prior-to-wedding}",
+      "kind": "event",
+      "event": "Start",
+      "name": "${concise label of triggering condition or milestone, e.g. Prior to wedding event}",
+      "annotation": "${full temporal or operational premise description, e.g. Timeline milestone: Setup window opens 3 hours prior to ceremony}",
+      "nextStepIds": [
+        "${ID of the first primary obligation task activated by this trigger}"
+      ]
+    }
+  }
+]
