@@ -1,0 +1,146 @@
+{
+  "name": "wedding_multi_vendor_curable_penalties",
+  "parties": [
+    { "name": "Couple" },
+    { "name": "Vendor A" },
+    { "name": "Vendor B" },
+    { "name": "Vendor C" }
+  ],
+  "steps": [
+    {
+      "id": "start-wedding-contract-enactment",
+      "kind": "event",
+      "event": "Start",
+      "name": "Wedding event contract execution commences",
+      "annotation": "Four-party contract involving couple and vendors A, B, C",
+      "nextStepIds": ["task-va-install-furniture-tenting"]
+    },
+    {
+      "id": "task-va-install-furniture-tenting",
+      "kind": "task",
+      "name": "Install furniture and tenting on schedule",
+      "annotation": "Prior to wedding event; must not delay more than 1 hour or disrupt schedule",
+      "initiatorName": "Vendor A",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vb-provide-av-lighting"],
+      "fallbackStepId": "task-va-issue-25pct-credit-minor-delay",
+      "fallbackQuestion": "Is furniture and tenting installed on schedule?"
+    },
+    {
+      "id": "task-va-issue-25pct-credit-minor-delay",
+      "kind": "task",
+      "name": "Issue 25% rental fee credit for minor delay",
+      "annotation": "Delay > 1 hour but no disruption to event; payable within 7 business days",
+      "initiatorName": "Vendor A",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vb-provide-av-lighting"],
+      "fallbackStepId": "task-va-issue-50pct-refund-disruption",
+      "fallbackQuestion": "Is delivery delay non-disruptive to event schedule?"
+    },
+    {
+      "id": "task-va-issue-50pct-refund-disruption",
+      "kind": "task",
+      "name": "Issue 50% refund for schedule disruption",
+      "annotation": "Delay directly disrupts event schedule by more than 30 minutes",
+      "initiatorName": "Vendor A",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vb-provide-av-lighting"],
+      "fallbackStepId": "end-uncompensated-breach",
+      "fallbackQuestion": "Is 50% refund compensation available?"
+    },
+    {
+      "id": "task-vb-provide-av-lighting",
+      "kind": "task",
+      "name": "Operate audio-visual and lighting equipment",
+      "annotation": "During wedding event before guests eat and socialize",
+      "initiatorName": "Vendor B",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vc-serve-scheduled-courses"],
+      "fallbackStepId": "task-vb-provide-replacement-within-90m",
+      "fallbackQuestion": "Are AV apparatus and lighting operating without defect?"
+    },
+    {
+      "id": "task-vb-provide-replacement-within-90m",
+      "kind": "task",
+      "name": "Provide functional replacement within 90 minutes",
+      "annotation": "Remedy equipment failure on-site within 90 minutes",
+      "initiatorName": "Vendor B",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vc-serve-scheduled-courses"],
+      "fallbackStepId": "task-vb-issue-80pct-refund-and-fee",
+      "fallbackQuestion": "Is functional replacement equipment provided within 90 minutes?"
+    },
+    {
+      "id": "task-vb-issue-80pct-refund-and-fee",
+      "kind": "task",
+      "name": "Issue 80% refund plus $300 failure fee",
+      "annotation": "Failure to remedy on-site results in 80% rental refund plus $300 failure fee",
+      "initiatorName": "Vendor B",
+      "recipientName": "Couple",
+      "nextStepIds": ["task-vc-serve-scheduled-courses"],
+      "fallbackStepId": "end-uncompensated-breach",
+      "fallbackQuestion": "Is 80% refund and $300 fee compensation available?"
+    },
+    {
+      "id": "task-vc-serve-scheduled-courses",
+      "kind": "task",
+      "name": "Serve scheduled courses and meals",
+      "annotation": "During last hour of event according to agreed timeline",
+      "initiatorName": "Vendor C",
+      "recipientName": "Couple",
+      "nextStepIds": ["end-fulfilled-perfect-catering"],
+      "fallbackStepId": "task-vc-supply-alternative-backup-meal",
+      "fallbackQuestion": "Are meals delivered on time and consumable?"
+    },
+    {
+      "id": "task-vc-supply-alternative-backup-meal",
+      "kind": "task",
+      "name": "Supply alternative meal from backup menu",
+      "annotation": "Alternative meal supplied per previously specified back-up menu",
+      "initiatorName": "Vendor C",
+      "recipientName": "Couple",
+      "nextStepIds": ["end-fulfilled-backup-catering"],
+      "fallbackStepId": "task-vc-issue-full-refund-liquidated-damages",
+      "fallbackQuestion": "Is alternative backup meal available?"
+    },
+    {
+      "id": "task-vc-issue-full-refund-liquidated-damages",
+      "kind": "task",
+      "name": "Issue 100% refund plus $500 liquidated damages",
+      "annotation": "100% catering refund plus liquidated damages up to $500 within 5 business days",
+      "initiatorName": "Vendor C",
+      "recipientName": "Couple",
+      "nextStepIds": ["end-fulfilled-liquidated-damages-catering"],
+      "fallbackStepId": "end-uncompensated-breach",
+      "fallbackQuestion": "Is full catering refund and liquidated damages available?"
+    },
+    {
+      "id": "end-fulfilled-perfect-catering",
+      "kind": "event",
+      "event": "Fulfill",
+      "name": "Wedding fulfilled with compliant catering and vendor services",
+      "annotation": null
+    },
+    {
+      "id": "end-fulfilled-backup-catering",
+      "kind": "event",
+      "event": "Fulfill",
+      "name": "Wedding fulfilled via backup catering remedy",
+      "annotation": null
+    },
+    {
+      "id": "end-fulfilled-liquidated-damages-catering",
+      "kind": "event",
+      "event": "Fulfill",
+      "name": "Wedding completed via full catering refund and liquidated damages",
+      "annotation": null
+    },
+    {
+      "id": "end-uncompensated-breach",
+      "kind": "event",
+      "event": "Breach",
+      "name": "Contract breached, vendor default uncompensated",
+      "annotation": null
+    }
+  ]
+}

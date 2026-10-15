@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions0lee42p" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message10xv8az" />
+  <bpmn:message id="Message0pc68u1" />
+  <bpmn:choreography id="Choreography1h7dedj" name="restrictive_covenant_compliance">
+    <bpmn:participant id="Participant1cn5f1j" name="Party A" />
+    <bpmn:participant id="Participant0tafcdj" name="Party B" />
+    <bpmn:messageFlow id="MessageFlow1lx9lk0" sourceRef="Participant1cn5f1j" targetRef="Participant0tafcdj" messageRef="Message10xv8az" />
+    <bpmn:messageFlow id="MessageFlow047p7oa" sourceRef="Participant1cn5f1j" targetRef="Participant0tafcdj" messageRef="Message0pc68u1" />
+    <bpmn:textAnnotation id="TextAnnotation0l70p9v">
+      <bpmn:text>Trigger: Negative covenant effective under Section 3.2</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association16r9z7n" sourceRef="Event0hxhyve" targetRef="TextAnnotation0l70p9v" />
+    <bpmn:textAnnotation id="TextAnnotation0bsltkl">
+      <bpmn:text>Continuous duty to refrain from engaging in prohibited conduct</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0l3e2b8" sourceRef="ChoreographyTask1ramlqc" targetRef="TextAnnotation0bsltkl" />
+    <bpmn:textAnnotation id="TextAnnotation0oalbwo">
+      <bpmn:text>Emergency compensatory payment and mitigation remedy upon violation</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1f6c8st" sourceRef="ChoreographyTask1262nhz" targetRef="TextAnnotation0oalbwo" />
+    <bpmn:startEvent id="Event0hxhyve" name="Restrictive covenant term commences">
+      <bpmn:outgoing>Flow08ie2dh</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition0t2ernj">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow08ie2dh" sourceRef="Event0hxhyve" targetRef="ChoreographyTask1ramlqc" />
+    <bpmn:choreographyTask id="ChoreographyTask1ramlqc" name="Maintain negative covenant compliance" initiatingParticipantRef="Participant1cn5f1j">
+      <bpmn:incoming>Flow08ie2dh</bpmn:incoming>
+      <bpmn:outgoing>Flow0c9ah66</bpmn:outgoing>
+      <bpmn:participantRef>Participant1cn5f1j</bpmn:participantRef>
+      <bpmn:participantRef>Participant0tafcdj</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow1lx9lk0</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0c9ah66" sourceRef="ChoreographyTask1ramlqc" targetRef="Gateway0cctca3" />
+    <bpmn:sequenceFlow id="Flow0qn9gmp" name="yes" sourceRef="Gateway0cctca3" targetRef="Event00thhm3" />
+    <bpmn:sequenceFlow id="Flow0ew0afi" name="no" sourceRef="Gateway0cctca3" targetRef="ChoreographyTask1262nhz" />
+    <bpmn:exclusiveGateway id="Gateway0cctca3" name="Is negative covenant observed without unauthorized violation?">
+      <bpmn:incoming>Flow0c9ah66</bpmn:incoming>
+      <bpmn:outgoing>Flow0qn9gmp</bpmn:outgoing>
+      <bpmn:outgoing>Flow0ew0afi</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:choreographyTask id="ChoreographyTask1262nhz" name="Tender compensatory violation cure payment" initiatingParticipantRef="Participant1cn5f1j">
+      <bpmn:incoming>Flow0ew0afi</bpmn:incoming>
+      <bpmn:outgoing>Flow0xfzxnf</bpmn:outgoing>
+      <bpmn:participantRef>Participant1cn5f1j</bpmn:participantRef>
+      <bpmn:participantRef>Participant0tafcdj</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow047p7oa</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0xfzxnf" sourceRef="ChoreographyTask1262nhz" targetRef="Gateway1hieksh" />
+    <bpmn:sequenceFlow id="Flow13kjxuj" name="yes" sourceRef="Gateway1hieksh" targetRef="Event0u1mhx7" />
+    <bpmn:sequenceFlow id="Flow135cssn" name="no" sourceRef="Gateway1hieksh" targetRef="Event0h4nzom" />
+    <bpmn:exclusiveGateway id="Gateway1hieksh" name="Is compensatory violation cure payment tendered within cure window?">
+      <bpmn:incoming>Flow0xfzxnf</bpmn:incoming>
+      <bpmn:outgoing>Flow13kjxuj</bpmn:outgoing>
+      <bpmn:outgoing>Flow135cssn</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event00thhm3" name="Contract fulfilled via complete negative covenant compliance">
+      <bpmn:incoming>Flow0qn9gmp</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0s9qwmn" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event0u1mhx7" name="Contract fulfilled via accepted compensatory violation cure">
+      <bpmn:incoming>Flow13kjxuj</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition02wfr5j" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event0h4nzom" name="Contract breached, uncured covenant violation">
+      <bpmn:incoming>Flow135cssn</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram01apxra">
+    <bpmndi:BPMNPlane id="BPMNPlane18fl9gl" bpmnElement="Choreography1h7dedj">
+      <bpmndi:BPMNShape id="BPMNShape1qmh2yz" bpmnElement="Event0hxhyve">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1xmd256" bpmnElement="ChoreographyTask1ramlqc">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1qlao20" bpmnElement="Participant1cn5f1j" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1xmd256">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1mda3bg" bpmnElement="Participant0tafcdj" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1xmd256">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape049ohra" bpmnElement="Gateway0cctca3" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0jfr90y" bpmnElement="ChoreographyTask1262nhz">
+        <dc:Bounds x="475" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0rw9nq5" bpmnElement="Participant1cn5f1j" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape0jfr90y">
+        <dc:Bounds x="475" y="170" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0g4mdbn" bpmnElement="Participant0tafcdj" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape0jfr90y">
+        <dc:Bounds x="475" y="230" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape03jpab3" bpmnElement="Gateway1hieksh" isMarkerVisible="true">
+        <dc:Bounds x="650" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0g178dg" bpmnElement="Event00thhm3">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ya4e39" bpmnElement="Event0u1mhx7">
+        <dc:Bounds x="807" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0r33n31" bpmnElement="Event0h4nzom">
+        <dc:Bounds x="807" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ifmiqr" bpmnElement="TextAnnotation0l70p9v">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape12h989m" bpmnElement="TextAnnotation0bsltkl">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0kw5qlq" bpmnElement="TextAnnotation0oalbwo">
+        <dc:Bounds x="475" y="280" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge1pl2afm" bpmnElement="Flow08ie2dh">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0qeeslm" bpmnElement="Flow0c9ah66">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge023huo3" bpmnElement="Flow0qn9gmp">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0ivvkyz" bpmnElement="Flow0ew0afi">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="475" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge07o2ajj" bpmnElement="Flow0xfzxnf">
+        <di:waypoint x="575" y="210" />
+        <di:waypoint x="650" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1nc1h9s" bpmnElement="Flow13kjxuj">
+        <di:waypoint x="700" y="210" />
+        <di:waypoint x="807" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0v9f7m6" bpmnElement="Flow135cssn">
+        <di:waypoint x="675" y="235" />
+        <di:waypoint x="675" y="350" />
+        <di:waypoint x="807" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0btxv08" bpmnElement="Association16r9z7n">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge118obbs" bpmnElement="Association0l3e2b8">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0wochv8" bpmnElement="Association1f6c8st">
+        <di:waypoint x="525" y="210" />
+        <di:waypoint x="575" y="315" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

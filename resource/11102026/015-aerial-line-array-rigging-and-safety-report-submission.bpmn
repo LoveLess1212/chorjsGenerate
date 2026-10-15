@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions1s40vp3" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message0e4lp0g" />
+  <bpmn:message id="Message012k5tv" />
+  <bpmn:choreography id="Choreography1jdlw0s" name="Aerial Line-Array Rigging and Safety Report Submission">
+    <bpmn:participant id="Participant13xp34z" name="SoundWave Pro Audio Inc." />
+    <bpmn:participant id="Participant09wkkxr" name="Producer" />
+    <bpmn:messageFlow id="MessageFlow0c4qzfx" sourceRef="Participant13xp34z" targetRef="Participant09wkkxr" messageRef="Message0e4lp0g" />
+    <bpmn:messageFlow id="MessageFlow1voxw72" sourceRef="Participant13xp34z" targetRef="Participant09wkkxr" messageRef="Message012k5tv" />
+    <bpmn:textAnnotation id="TextAnnotation09shiik">
+      <bpmn:text>Clause activation: rig aerial line-array and submit report by Friday 12:00 PM</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0mo86vw" sourceRef="Event0k3jbfb" targetRef="TextAnnotation09shiik" />
+    <bpmn:textAnnotation id="TextAnnotation15wcetd">
+      <bpmn:text>Deadline by 12:00 PM on Friday</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association15mz0w4" sourceRef="ChoreographyTask1cuvufu" targetRef="TextAnnotation15wcetd" />
+    <bpmn:startEvent id="Event0k3jbfb" name="Contract starts">
+      <bpmn:outgoing>Flow07bnuxu</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition1v3fmu5">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow07bnuxu" sourceRef="Event0k3jbfb" targetRef="ChoreographyTask19sajet" />
+    <bpmn:choreographyTask id="ChoreographyTask19sajet" name="Rig aerial line-array sound system" initiatingParticipantRef="Participant13xp34z">
+      <bpmn:incoming>Flow07bnuxu</bpmn:incoming>
+      <bpmn:outgoing>Flow0epg6a4</bpmn:outgoing>
+      <bpmn:participantRef>Participant13xp34z</bpmn:participantRef>
+      <bpmn:participantRef>Participant09wkkxr</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0c4qzfx</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0epg6a4" sourceRef="ChoreographyTask19sajet" targetRef="ChoreographyTask1cuvufu" />
+    <bpmn:choreographyTask id="ChoreographyTask1cuvufu" name="Submit electrical safety grounding report" initiatingParticipantRef="Participant13xp34z">
+      <bpmn:incoming>Flow0epg6a4</bpmn:incoming>
+      <bpmn:outgoing>Flow150m1lg</bpmn:outgoing>
+      <bpmn:participantRef>Participant13xp34z</bpmn:participantRef>
+      <bpmn:participantRef>Participant09wkkxr</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow1voxw72</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow150m1lg" sourceRef="ChoreographyTask1cuvufu" targetRef="Event0zvsrlz" />
+    <bpmn:endEvent id="Event0zvsrlz" name="Fulfill delivery and safety requirements">
+      <bpmn:incoming>Flow150m1lg</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0pncwg4" />
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram0ivi93t">
+    <bpmndi:BPMNPlane id="BPMNPlane0ojew5z" bpmnElement="Choreography1jdlw0s">
+      <bpmndi:BPMNShape id="BPMNShape0t5rlv5" bpmnElement="Event0k3jbfb">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0te0cqc" bpmnElement="ChoreographyTask19sajet">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1a5ux8g" bpmnElement="Participant13xp34z" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape0te0cqc">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0joums0" bpmnElement="Participant09wkkxr" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape0te0cqc">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1pperix" bpmnElement="ChoreographyTask1cuvufu">
+        <dc:Bounds x="325" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0jy7omh" bpmnElement="Participant13xp34z" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1pperix">
+        <dc:Bounds x="325" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0bnv970" bpmnElement="Participant09wkkxr" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1pperix">
+        <dc:Bounds x="325" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0toc1mz" bpmnElement="Event0zvsrlz">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0q59mna" bpmnElement="TextAnnotation09shiik">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0dah2xe" bpmnElement="TextAnnotation15wcetd">
+        <dc:Bounds x="325" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge12ovivn" bpmnElement="Flow07bnuxu">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1p6zjd3" bpmnElement="Flow0epg6a4">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="325" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0w4r510" bpmnElement="Flow150m1lg">
+        <di:waypoint x="425" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0si1qvs" bpmnElement="Association0mo86vw">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0pkn6t6" bpmnElement="Association15mz0w4">
+        <di:waypoint x="375" y="70" />
+        <di:waypoint x="425" y="175" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

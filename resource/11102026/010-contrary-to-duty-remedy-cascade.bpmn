@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions1uggjhn" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message0r5c1zy" />
+  <bpmn:message id="Message04sa35v" />
+  <bpmn:choreography id="Choreography03sjv1a" name="contrary_to_duty_remedy_cascade">
+    <bpmn:participant id="Participant0leos42" name="Party A" />
+    <bpmn:participant id="Participant1cgo0z9" name="Party B" />
+    <bpmn:participant id="Participant1p85x1s" name="Party C" />
+    <bpmn:messageFlow id="MessageFlow0knbvyk" sourceRef="Participant0leos42" targetRef="Participant1cgo0z9" messageRef="Message0r5c1zy" />
+    <bpmn:messageFlow id="MessageFlow0othgod" sourceRef="Participant1p85x1s" targetRef="Participant1cgo0z9" messageRef="Message04sa35v" />
+    <bpmn:textAnnotation id="TextAnnotation0n8bkqd">
+      <bpmn:text>Trigger: Contractual performance order issued under Section 4.1</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0gbcny0" sourceRef="Event0j47tkd" targetRef="TextAnnotation0n8bkqd" />
+    <bpmn:textAnnotation id="TextAnnotation030zakq">
+      <bpmn:text>Initial obligation: Primary performance delivered on schedule</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1ipzzfz" sourceRef="ChoreographyTask1lkk5d5" targetRef="TextAnnotation030zakq" />
+    <bpmn:textAnnotation id="TextAnnotation1xytvta">
+      <bpmn:text>Secondary remedy obligation: Substitute performance delivered by Party C</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association13taqa1" sourceRef="ChoreographyTask0sn68ly" targetRef="TextAnnotation1xytvta" />
+    <bpmn:startEvent id="Event0j47tkd" name="Performance order issued">
+      <bpmn:outgoing>Flow183qkbn</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition1u5tswt">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow183qkbn" sourceRef="Event0j47tkd" targetRef="ChoreographyTask1lkk5d5" />
+    <bpmn:choreographyTask id="ChoreographyTask1lkk5d5" name="Perform primary obligation" initiatingParticipantRef="Participant0leos42">
+      <bpmn:incoming>Flow183qkbn</bpmn:incoming>
+      <bpmn:outgoing>Flow1h0ro40</bpmn:outgoing>
+      <bpmn:participantRef>Participant0leos42</bpmn:participantRef>
+      <bpmn:participantRef>Participant1cgo0z9</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0knbvyk</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow1h0ro40" sourceRef="ChoreographyTask1lkk5d5" targetRef="Gateway1s1jv8h" />
+    <bpmn:sequenceFlow id="Flow0qes1tf" name="yes" sourceRef="Gateway1s1jv8h" targetRef="Event073dn88" />
+    <bpmn:sequenceFlow id="Flow0ggyp3l" name="no" sourceRef="Gateway1s1jv8h" targetRef="ChoreographyTask0sn68ly" />
+    <bpmn:exclusiveGateway id="Gateway1s1jv8h" name="Is primary obligation performed within agreed primary timeframe?">
+      <bpmn:incoming>Flow1h0ro40</bpmn:incoming>
+      <bpmn:outgoing>Flow0qes1tf</bpmn:outgoing>
+      <bpmn:outgoing>Flow0ggyp3l</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:choreographyTask id="ChoreographyTask0sn68ly" name="Perform substitute remedy obligation" initiatingParticipantRef="Participant1p85x1s">
+      <bpmn:incoming>Flow0ggyp3l</bpmn:incoming>
+      <bpmn:outgoing>Flow0c0nk3h</bpmn:outgoing>
+      <bpmn:participantRef>Participant1p85x1s</bpmn:participantRef>
+      <bpmn:participantRef>Participant1cgo0z9</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0othgod</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0c0nk3h" sourceRef="ChoreographyTask0sn68ly" targetRef="Gateway1ga7bf2" />
+    <bpmn:sequenceFlow id="Flow1hqgfwg" name="yes" sourceRef="Gateway1ga7bf2" targetRef="Event0g5eopm" />
+    <bpmn:sequenceFlow id="Flow1su8490" name="no" sourceRef="Gateway1ga7bf2" targetRef="Event0d0i54u" />
+    <bpmn:exclusiveGateway id="Gateway1ga7bf2" name="Is substitute remedy obligation performed within secondary remedy window?">
+      <bpmn:incoming>Flow0c0nk3h</bpmn:incoming>
+      <bpmn:outgoing>Flow1hqgfwg</bpmn:outgoing>
+      <bpmn:outgoing>Flow1su8490</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event073dn88" name="Contract fulfilled via primary performance">
+      <bpmn:incoming>Flow0qes1tf</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition19hxob8" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event0g5eopm" name="Contract fulfilled via secondary substitute remedy">
+      <bpmn:incoming>Flow1hqgfwg</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0eu54oi" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event0d0i54u" name="Contract breached, performance obligation unfulfilled">
+      <bpmn:incoming>Flow1su8490</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram1x94gl3">
+    <bpmndi:BPMNPlane id="BPMNPlane1gz9veu" bpmnElement="Choreography03sjv1a">
+      <bpmndi:BPMNShape id="BPMNShape1f9rcx8" bpmnElement="Event0j47tkd">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1qe329z" bpmnElement="ChoreographyTask1lkk5d5">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape11upy1u" bpmnElement="Participant0leos42" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1qe329z">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape15eeq2w" bpmnElement="Participant1cgo0z9" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1qe329z">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1a4domv" bpmnElement="Gateway1s1jv8h" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1ew4234" bpmnElement="ChoreographyTask0sn68ly">
+        <dc:Bounds x="475" y="170" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0isjjpt" bpmnElement="Participant1p85x1s" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1ew4234">
+        <dc:Bounds x="475" y="170" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0i7nliz" bpmnElement="Participant1cgo0z9" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1ew4234">
+        <dc:Bounds x="475" y="230" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1jr9kzr" bpmnElement="Gateway1ga7bf2" isMarkerVisible="true">
+        <dc:Bounds x="650" y="185" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0tllwqk" bpmnElement="Event073dn88">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ztpqh7" bpmnElement="Event0g5eopm">
+        <dc:Bounds x="807" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0nx5zqc" bpmnElement="Event0d0i54u">
+        <dc:Bounds x="807" y="332" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape00iagst" bpmnElement="TextAnnotation0n8bkqd">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape12m3sk7" bpmnElement="TextAnnotation030zakq">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1k65gge" bpmnElement="TextAnnotation1xytvta">
+        <dc:Bounds x="475" y="280" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge0oxmka9" bpmnElement="Flow183qkbn">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge06udmxe" bpmnElement="Flow1h0ro40">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0f27x7b" bpmnElement="Flow0qes1tf">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0p6kwhl" bpmnElement="Flow0ggyp3l">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="475" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1ajdwyu" bpmnElement="Flow0c0nk3h">
+        <di:waypoint x="575" y="210" />
+        <di:waypoint x="650" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1o1wj4t" bpmnElement="Flow1hqgfwg">
+        <di:waypoint x="700" y="210" />
+        <di:waypoint x="807" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1ctq16q" bpmnElement="Flow1su8490">
+        <di:waypoint x="675" y="235" />
+        <di:waypoint x="675" y="350" />
+        <di:waypoint x="807" y="350" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1t1fwnj" bpmnElement="Association0gbcny0">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge12amt19" bpmnElement="Association1ipzzfz">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge16ltoun" bpmnElement="Association13taqa1">
+        <di:waypoint x="525" y="210" />
+        <di:waypoint x="575" y="315" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
