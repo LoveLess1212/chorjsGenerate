@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions0jmggri" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message1u5pjvh" />
+  <bpmn:message id="Message19sqe5c" />
+  <bpmn:choreography id="Choreography14yx06a" name="discretionary_optional_request_permission">
+    <bpmn:participant id="Participant0np0p0m" name="Party A" />
+    <bpmn:participant id="Participant01kt12p" name="Party B" />
+    <bpmn:messageFlow id="MessageFlow183whaq" sourceRef="Participant0np0p0m" targetRef="Participant01kt12p" messageRef="Message1u5pjvh" />
+    <bpmn:messageFlow id="MessageFlow1osnbr7" sourceRef="Participant01kt12p" targetRef="Participant0np0p0m" messageRef="Message19sqe5c" />
+    <bpmn:textAnnotation id="TextAnnotation0ogy7ke">
+      <bpmn:text>Trigger: Optional election period under Section 2.1</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1hieovy" sourceRef="Event07q7l1i" targetRef="TextAnnotation0ogy7ke" />
+    <bpmn:textAnnotation id="TextAnnotation1yl7rp7">
+      <bpmn:text>Discretionary submission of supplemental performance election</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0dh7nvp" sourceRef="ChoreographyTask1n957wj" targetRef="TextAnnotation1yl7rp7" />
+    <bpmn:textAnnotation id="TextAnnotation0chtzgz">
+      <bpmn:text>Execution of requested discretionary performance by Party B</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association013eyen" sourceRef="ChoreographyTask0df36hz" targetRef="TextAnnotation0chtzgz" />
+    <bpmn:startEvent id="Event07q7l1i" name="Discretionary election window opens">
+      <bpmn:outgoing>Flow0n13lgu</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition1n3govl">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow0n13lgu" sourceRef="Event07q7l1i" targetRef="ChoreographyTask1n957wj" />
+    <bpmn:choreographyTask id="ChoreographyTask1n957wj" name="Elect discretionary option" initiatingParticipantRef="Participant0np0p0m">
+      <bpmn:incoming>Flow0n13lgu</bpmn:incoming>
+      <bpmn:outgoing>Flow020vsbg</bpmn:outgoing>
+      <bpmn:participantRef>Participant0np0p0m</bpmn:participantRef>
+      <bpmn:participantRef>Participant01kt12p</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow183whaq</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow020vsbg" sourceRef="ChoreographyTask1n957wj" targetRef="Gateway0re1x16" />
+    <bpmn:sequenceFlow id="Flow1am94bt" name="yes" sourceRef="Gateway0re1x16" targetRef="ChoreographyTask0df36hz" />
+    <bpmn:sequenceFlow id="Flow01asywr" name="no" sourceRef="Gateway0re1x16" targetRef="Event0bqxc15" />
+    <bpmn:exclusiveGateway id="Gateway0re1x16" name="Does Party A elect to exercise discretionary option?">
+      <bpmn:incoming>Flow020vsbg</bpmn:incoming>
+      <bpmn:outgoing>Flow1am94bt</bpmn:outgoing>
+      <bpmn:outgoing>Flow01asywr</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:choreographyTask id="ChoreographyTask0df36hz" name="Perform elected discretionary service" initiatingParticipantRef="Participant01kt12p">
+      <bpmn:incoming>Flow1am94bt</bpmn:incoming>
+      <bpmn:outgoing>Flow01qebad</bpmn:outgoing>
+      <bpmn:participantRef>Participant01kt12p</bpmn:participantRef>
+      <bpmn:participantRef>Participant0np0p0m</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow1osnbr7</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow01qebad" sourceRef="ChoreographyTask0df36hz" targetRef="Gateway19noofv" />
+    <bpmn:sequenceFlow id="Flow17erzce" name="yes" sourceRef="Gateway19noofv" targetRef="Event15buhsr" />
+    <bpmn:sequenceFlow id="Flow1cezth4" name="no" sourceRef="Gateway19noofv" targetRef="Event1oa512h" />
+    <bpmn:exclusiveGateway id="Gateway19noofv" name="Is elected discretionary service performed as requested?">
+      <bpmn:incoming>Flow01qebad</bpmn:incoming>
+      <bpmn:outgoing>Flow17erzce</bpmn:outgoing>
+      <bpmn:outgoing>Flow1cezth4</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event0bqxc15" name="Contract fulfilled under standard terms without discretionary election">
+      <bpmn:incoming>Flow01asywr</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition1yh4acm" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event15buhsr" name="Contract fulfilled via completed discretionary performance">
+      <bpmn:incoming>Flow17erzce</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition020fgfw" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event1oa512h" name="Contract breached, elected discretionary service unperformed">
+      <bpmn:incoming>Flow1cezth4</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram1r3vfaq">
+    <bpmndi:BPMNPlane id="BPMNPlane01x5qxx" bpmnElement="Choreography14yx06a">
+      <bpmndi:BPMNShape id="BPMNShape1jpkaab" bpmnElement="Event07q7l1i">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1un4hu6" bpmnElement="ChoreographyTask1n957wj">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1j2wc18" bpmnElement="Participant0np0p0m" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1un4hu6">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1eufhft" bpmnElement="Participant01kt12p" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1un4hu6">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1b61pic" bpmnElement="Gateway0re1x16" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0y3fxmn" bpmnElement="ChoreographyTask0df36hz">
+        <dc:Bounds x="475" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1vppzqg" bpmnElement="Participant01kt12p" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape0y3fxmn">
+        <dc:Bounds x="475" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1o24f4c" bpmnElement="Participant0np0p0m" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape0y3fxmn">
+        <dc:Bounds x="475" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0161vot" bpmnElement="Gateway19noofv" isMarkerVisible="true">
+        <dc:Bounds x="650" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0nip2my" bpmnElement="Event0bqxc15">
+        <dc:Bounds x="507" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0xly9tv" bpmnElement="Event15buhsr">
+        <dc:Bounds x="807" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape09e10qo" bpmnElement="Event1oa512h">
+        <dc:Bounds x="807" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1hfksxm" bpmnElement="TextAnnotation0ogy7ke">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0s8kejw" bpmnElement="TextAnnotation1yl7rp7">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1sfor43" bpmnElement="TextAnnotation0chtzgz">
+        <dc:Bounds x="475" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge0ea732h" bpmnElement="Flow0n13lgu">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0cufyrk" bpmnElement="Flow020vsbg">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0cgz6nc" bpmnElement="Flow1am94bt">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="475" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge064vzs0" bpmnElement="Flow01asywr">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="507" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge11yc5q9" bpmnElement="Flow01qebad">
+        <di:waypoint x="575" y="70" />
+        <di:waypoint x="650" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge02j3zh3" bpmnElement="Flow17erzce">
+        <di:waypoint x="700" y="70" />
+        <di:waypoint x="807" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0s5udrz" bpmnElement="Flow1cezth4">
+        <di:waypoint x="675" y="95" />
+        <di:waypoint x="675" y="210" />
+        <di:waypoint x="807" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0et7da3" bpmnElement="Association1hieovy">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1tsi9in" bpmnElement="Association0dh7nvp">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1smbbq9" bpmnElement="Association013eyen">
+        <di:waypoint x="525" y="70" />
+        <di:waypoint x="575" y="175" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

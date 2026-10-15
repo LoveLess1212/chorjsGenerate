@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions0fogrgo" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message0ot0b22" />
+  <bpmn:choreography id="Choreography0ky49f9" name="conditioned_performance_initiation">
+    <bpmn:participant id="Participant1fxq1tx" name="Party A" />
+    <bpmn:participant id="Participant1kzt707" name="Party B" />
+    <bpmn:messageFlow id="MessageFlow084bmlu" sourceRef="Participant1fxq1tx" targetRef="Participant1kzt707" messageRef="Message0ot0b22" />
+    <bpmn:textAnnotation id="TextAnnotation1he5xyk">
+      <bpmn:text>Trigger condition: Operational premise condition satisfied</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association00eg1sm" sourceRef="Event0fuy94u" targetRef="TextAnnotation1he5xyk" />
+    <bpmn:textAnnotation id="TextAnnotation1idkfwk">
+      <bpmn:text>Immediate responsive performance upon premise condition satisfaction</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0h1erya" sourceRef="ChoreographyTask19k1o0b" targetRef="TextAnnotation1idkfwk" />
+    <bpmn:startEvent id="Event0fuy94u" name="Condition precedent occurred">
+      <bpmn:outgoing>Flow040iyd8</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition1dv9dov">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow040iyd8" sourceRef="Event0fuy94u" targetRef="ChoreographyTask19k1o0b" />
+    <bpmn:choreographyTask id="ChoreographyTask19k1o0b" name="Render conditioned response" initiatingParticipantRef="Participant1fxq1tx">
+      <bpmn:incoming>Flow040iyd8</bpmn:incoming>
+      <bpmn:outgoing>Flow0ngyte0</bpmn:outgoing>
+      <bpmn:participantRef>Participant1fxq1tx</bpmn:participantRef>
+      <bpmn:participantRef>Participant1kzt707</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow084bmlu</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0ngyte0" sourceRef="ChoreographyTask19k1o0b" targetRef="Gateway0393tb8" />
+    <bpmn:sequenceFlow id="Flow0g27bwz" name="yes" sourceRef="Gateway0393tb8" targetRef="Event0uik0ee" />
+    <bpmn:sequenceFlow id="Flow119pbdq" name="no" sourceRef="Gateway0393tb8" targetRef="Event1r1ofy8" />
+    <bpmn:exclusiveGateway id="Gateway0393tb8" name="Is conditioned response rendered promptly upon condition occurrence?">
+      <bpmn:incoming>Flow0ngyte0</bpmn:incoming>
+      <bpmn:outgoing>Flow0g27bwz</bpmn:outgoing>
+      <bpmn:outgoing>Flow119pbdq</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event0uik0ee" name="Contract fulfilled via conditioned performance response">
+      <bpmn:incoming>Flow0g27bwz</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0oio02f" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event1r1ofy8" name="Contract breached, conditioned commitment unfulfilled">
+      <bpmn:incoming>Flow119pbdq</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram0h8tkq1">
+    <bpmndi:BPMNPlane id="BPMNPlane1uowxfq" bpmnElement="Choreography0ky49f9">
+      <bpmndi:BPMNShape id="BPMNShape1a833p8" bpmnElement="Event0fuy94u">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape10v7jlz" bpmnElement="ChoreographyTask19k1o0b">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape10f4md9" bpmnElement="Participant1fxq1tx" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape10v7jlz">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0bnntib" bpmnElement="Participant1kzt707" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape10v7jlz">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape08qwemx" bpmnElement="Gateway0393tb8" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1mcj93v" bpmnElement="Event0uik0ee">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape00buphn" bpmnElement="Event1r1ofy8">
+        <dc:Bounds x="507" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1rzj24i" bpmnElement="TextAnnotation1he5xyk">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1se3lmt" bpmnElement="TextAnnotation1idkfwk">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge04baols" bpmnElement="Flow040iyd8">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge09fmmm2" bpmnElement="Flow0ngyte0">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0efm0v8" bpmnElement="Flow0g27bwz">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0ulage5" bpmnElement="Flow119pbdq">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="507" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0epamzl" bpmnElement="Association00eg1sm">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge01o9yfh" bpmnElement="Association0h1erya">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

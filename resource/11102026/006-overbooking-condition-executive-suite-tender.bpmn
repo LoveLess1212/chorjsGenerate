@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions1dbrnqt" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message19ooy4x" />
+  <bpmn:choreography id="Choreography0e1q7om" name="overbooking_condition_executive_suite_tender">
+    <bpmn:participant id="Participant0gi38gn" name="Jade Hotel" />
+    <bpmn:participant id="Participant1c6pujn" name="Customer" />
+    <bpmn:messageFlow id="MessageFlow1tz9iy7" sourceRef="Participant0gi38gn" targetRef="Participant1c6pujn" messageRef="Message19ooy4x" />
+    <bpmn:textAnnotation id="TextAnnotation0ykm755">
+      <bpmn:text>Trigger condition: Customer booking cannot be honored due to overbooking</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1d8zvp5" sourceRef="Event14pqo2h" targetRef="TextAnnotation0ykm755" />
+    <bpmn:textAnnotation id="TextAnnotation0oe97ne">
+      <bpmn:text>Immediate remedy tender upon overbooking condition satisfaction</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association1ms6w2j" sourceRef="ChoreographyTask14cdi4p" targetRef="TextAnnotation0oe97ne" />
+    <bpmn:startEvent id="Event14pqo2h" name="Room overbooking condition fired upon arrival">
+      <bpmn:outgoing>Flow0eatkm0</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition084k4nj">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow0eatkm0" sourceRef="Event14pqo2h" targetRef="ChoreographyTask14cdi4p" />
+    <bpmn:choreographyTask id="ChoreographyTask14cdi4p" name="Tender upgraded executive suite accommodation" initiatingParticipantRef="Participant0gi38gn">
+      <bpmn:incoming>Flow0eatkm0</bpmn:incoming>
+      <bpmn:outgoing>Flow1b5zt2h</bpmn:outgoing>
+      <bpmn:participantRef>Participant0gi38gn</bpmn:participantRef>
+      <bpmn:participantRef>Participant1c6pujn</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow1tz9iy7</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow1b5zt2h" sourceRef="ChoreographyTask14cdi4p" targetRef="Gateway0qpl2gk" />
+    <bpmn:sequenceFlow id="Flow17675tq" name="yes" sourceRef="Gateway0qpl2gk" targetRef="Event0jzxvh7" />
+    <bpmn:sequenceFlow id="Flow0kayqlg" name="no" sourceRef="Gateway0qpl2gk" targetRef="Event05l26ra" />
+    <bpmn:exclusiveGateway id="Gateway0qpl2gk" name="Is upgraded executive suite accommodation tendered upon arrival?">
+      <bpmn:incoming>Flow1b5zt2h</bpmn:incoming>
+      <bpmn:outgoing>Flow17675tq</bpmn:outgoing>
+      <bpmn:outgoing>Flow0kayqlg</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event0jzxvh7" name="Contract fulfilled via executive suite upgrade">
+      <bpmn:incoming>Flow17675tq</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition1ewwl36" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event05l26ra" name="Contract breached, overbooking condition uncompensated">
+      <bpmn:incoming>Flow0kayqlg</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram0wobpmt">
+    <bpmndi:BPMNPlane id="BPMNPlane1m7eldw" bpmnElement="Choreography0e1q7om">
+      <bpmndi:BPMNShape id="BPMNShape07pgtgx" bpmnElement="Event14pqo2h">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape02jjpqn" bpmnElement="ChoreographyTask14cdi4p">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape05f81c4" bpmnElement="Participant0gi38gn" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape02jjpqn">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0m8sl4l" bpmnElement="Participant1c6pujn" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape02jjpqn">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1vibxge" bpmnElement="Gateway0qpl2gk" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0bd4uwr" bpmnElement="Event0jzxvh7">
+        <dc:Bounds x="507" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ao05f1" bpmnElement="Event05l26ra">
+        <dc:Bounds x="507" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1s61usx" bpmnElement="TextAnnotation0ykm755">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0czibdd" bpmnElement="TextAnnotation0oe97ne">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge1axsn1k" bpmnElement="Flow0eatkm0">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1apbyol" bpmnElement="Flow1b5zt2h">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1v4bna3" bpmnElement="Flow17675tq">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="507" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0fwl0ce" bpmnElement="Flow0kayqlg">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="507" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0sjjjch" bpmnElement="Association1d8zvp5">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1pfff1k" bpmnElement="Association1ms6w2j">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>

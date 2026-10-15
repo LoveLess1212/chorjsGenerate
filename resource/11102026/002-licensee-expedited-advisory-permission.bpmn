@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" id="Definitions02tsa3i" targetNamespace="http://bpmn.io/schema/bpmn">
+  <bpmn:message id="Message0emmxlc" />
+  <bpmn:message id="Message1kbn2op" />
+  <bpmn:choreography id="Choreography1wn6wy8" name="licensee_expedited_advisory_permission">
+    <bpmn:participant id="Participant1guaof4" name="Licensee" />
+    <bpmn:participant id="Participant0j1345v" name="Licensor" />
+    <bpmn:messageFlow id="MessageFlow0vgaivc" sourceRef="Participant1guaof4" targetRef="Participant0j1345v" messageRef="Message0emmxlc" />
+    <bpmn:messageFlow id="MessageFlow1p9qnr5" sourceRef="Participant0j1345v" targetRef="Participant1guaof4" messageRef="Message1kbn2op" />
+    <bpmn:textAnnotation id="TextAnnotation1xn67d8">
+      <bpmn:text>Option window under Section 5.1</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0rfmaxd" sourceRef="Event0er057x" targetRef="TextAnnotation1xn67d8" />
+    <bpmn:textAnnotation id="TextAnnotation05byku1">
+      <bpmn:text>Optional request for expedited advisory services</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association09lls5h" sourceRef="ChoreographyTask0cnzgpz" targetRef="TextAnnotation05byku1" />
+    <bpmn:textAnnotation id="TextAnnotation0oh8ccy">
+      <bpmn:text>Execution of elected advisory review within agreed turnaround</bpmn:text>
+    </bpmn:textAnnotation>
+    <bpmn:association id="Association0jskk8a" sourceRef="ChoreographyTask1jny1y7" targetRef="TextAnnotation0oh8ccy" />
+    <bpmn:startEvent id="Event0er057x" name="Advisory election window opens">
+      <bpmn:outgoing>Flow0iy9ufm</bpmn:outgoing>
+      <bpmn:conditionalEventDefinition id="ConditionalEventDefinition0p1pui5">
+        <bpmn:condition xsi:type="bpmn:tFormalExpression" />
+      </bpmn:conditionalEventDefinition>
+    </bpmn:startEvent>
+    <bpmn:sequenceFlow id="Flow0iy9ufm" sourceRef="Event0er057x" targetRef="ChoreographyTask0cnzgpz" />
+    <bpmn:choreographyTask id="ChoreographyTask0cnzgpz" name="Elect expedited technical advisory review" initiatingParticipantRef="Participant1guaof4">
+      <bpmn:incoming>Flow0iy9ufm</bpmn:incoming>
+      <bpmn:outgoing>Flow1oyfzty</bpmn:outgoing>
+      <bpmn:participantRef>Participant1guaof4</bpmn:participantRef>
+      <bpmn:participantRef>Participant0j1345v</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow0vgaivc</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow1oyfzty" sourceRef="ChoreographyTask0cnzgpz" targetRef="Gateway1s9qzig" />
+    <bpmn:sequenceFlow id="Flow01pgf3d" name="yes" sourceRef="Gateway1s9qzig" targetRef="ChoreographyTask1jny1y7" />
+    <bpmn:sequenceFlow id="Flow0bcf7bb" name="no" sourceRef="Gateway1s9qzig" targetRef="Event0aa478v" />
+    <bpmn:exclusiveGateway id="Gateway1s9qzig" name="Does Licensee elect to exercise expedited advisory review option?">
+      <bpmn:incoming>Flow1oyfzty</bpmn:incoming>
+      <bpmn:outgoing>Flow01pgf3d</bpmn:outgoing>
+      <bpmn:outgoing>Flow0bcf7bb</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:choreographyTask id="ChoreographyTask1jny1y7" name="Conduct expedited technical advisory review" initiatingParticipantRef="Participant0j1345v">
+      <bpmn:incoming>Flow01pgf3d</bpmn:incoming>
+      <bpmn:outgoing>Flow0u4wu1l</bpmn:outgoing>
+      <bpmn:participantRef>Participant0j1345v</bpmn:participantRef>
+      <bpmn:participantRef>Participant1guaof4</bpmn:participantRef>
+      <bpmn:messageFlowRef>MessageFlow1p9qnr5</bpmn:messageFlowRef>
+    </bpmn:choreographyTask>
+    <bpmn:sequenceFlow id="Flow0u4wu1l" sourceRef="ChoreographyTask1jny1y7" targetRef="Gateway1u8znt5" />
+    <bpmn:sequenceFlow id="Flow1ykzr00" name="yes" sourceRef="Gateway1u8znt5" targetRef="Event1hu7uj2" />
+    <bpmn:sequenceFlow id="Flow0edzqti" name="no" sourceRef="Gateway1u8znt5" targetRef="Event1jqatqs" />
+    <bpmn:exclusiveGateway id="Gateway1u8znt5" name="Is expedited advisory review completed as requested?">
+      <bpmn:incoming>Flow0u4wu1l</bpmn:incoming>
+      <bpmn:outgoing>Flow1ykzr00</bpmn:outgoing>
+      <bpmn:outgoing>Flow0edzqti</bpmn:outgoing>
+    </bpmn:exclusiveGateway>
+    <bpmn:endEvent id="Event0aa478v" name="Contract fulfilled under standard terms without advisory">
+      <bpmn:incoming>Flow0bcf7bb</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition0owu9g3" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event1hu7uj2" name="Contract fulfilled with expedited advisory review">
+      <bpmn:incoming>Flow1ykzr00</bpmn:incoming>
+      <bpmn:terminateEventDefinition id="TerminateEventDefinition1yp4cfj" />
+    </bpmn:endEvent>
+    <bpmn:endEvent id="Event1jqatqs" name="Contract breached, elected advisory review unperformed">
+      <bpmn:incoming>Flow0edzqti</bpmn:incoming>
+    </bpmn:endEvent>
+  </bpmn:choreography>
+  <bpmndi:BPMNDiagram id="BPMNDiagram0zvqkgl">
+    <bpmndi:BPMNPlane id="BPMNPlane0rb9j4n" bpmnElement="Choreography1wn6wy8">
+      <bpmndi:BPMNShape id="BPMNShape1gr4qbs" bpmnElement="Event0er057x">
+        <dc:Bounds x="57" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1fxnw4k" bpmnElement="ChoreographyTask0cnzgpz">
+        <dc:Bounds x="175" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape022m3zw" bpmnElement="Participant1guaof4" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape1fxnw4k">
+        <dc:Bounds x="175" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1ghx5df" bpmnElement="Participant0j1345v" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape1fxnw4k">
+        <dc:Bounds x="175" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1xf556q" bpmnElement="Gateway1s9qzig" isMarkerVisible="true">
+        <dc:Bounds x="350" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape03r1wz3" bpmnElement="ChoreographyTask1jny1y7">
+        <dc:Bounds x="475" y="30" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0vwxhcg" bpmnElement="Participant0j1345v" isMessageVisible="false" participantBandKind="top_initiating" choreographyActivityShape="BPMNShape03r1wz3">
+        <dc:Bounds x="475" y="30" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape09rpn3i" bpmnElement="Participant1guaof4" isMessageVisible="false" participantBandKind="bottom_non_initiating" choreographyActivityShape="BPMNShape03r1wz3">
+        <dc:Bounds x="475" y="90" width="100" height="20" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1s7f4ds" bpmnElement="Gateway1u8znt5" isMarkerVisible="true">
+        <dc:Bounds x="650" y="45" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape1mvz648" bpmnElement="Event0aa478v">
+        <dc:Bounds x="507" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0fvexb7" bpmnElement="Event1hu7uj2">
+        <dc:Bounds x="807" y="52" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0ieobu1" bpmnElement="Event1jqatqs">
+        <dc:Bounds x="807" y="192" width="36" height="36" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape12a74sp" bpmnElement="TextAnnotation1xn67d8">
+        <dc:Bounds x="57" y="162" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape0u9s8xy" bpmnElement="TextAnnotation05byku1">
+        <dc:Bounds x="175" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="BPMNShape08dm8iv" bpmnElement="TextAnnotation0oh8ccy">
+        <dc:Bounds x="475" y="140" width="200" height="70" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="BPMNEdge1lm6v13" bpmnElement="Flow0iy9ufm">
+        <di:waypoint x="93" y="70" />
+        <di:waypoint x="175" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1aawzqg" bpmnElement="Flow1oyfzty">
+        <di:waypoint x="275" y="70" />
+        <di:waypoint x="350" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1sipsfi" bpmnElement="Flow01pgf3d">
+        <di:waypoint x="400" y="70" />
+        <di:waypoint x="475" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge12v9dws" bpmnElement="Flow0bcf7bb">
+        <di:waypoint x="375" y="95" />
+        <di:waypoint x="375" y="210" />
+        <di:waypoint x="507" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge05bqn0g" bpmnElement="Flow0u4wu1l">
+        <di:waypoint x="575" y="70" />
+        <di:waypoint x="650" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0zunpda" bpmnElement="Flow1ykzr00">
+        <di:waypoint x="700" y="70" />
+        <di:waypoint x="807" y="70" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1wwqaw9" bpmnElement="Flow0edzqti">
+        <di:waypoint x="675" y="95" />
+        <di:waypoint x="675" y="210" />
+        <di:waypoint x="807" y="210" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge1rizsar" bpmnElement="Association0rfmaxd">
+        <di:waypoint x="75" y="70" />
+        <di:waypoint x="157" y="197" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0wuv9k9" bpmnElement="Association09lls5h">
+        <di:waypoint x="225" y="70" />
+        <di:waypoint x="275" y="175" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="BPMNEdge0c3kvln" bpmnElement="Association0jskk8a">
+        <di:waypoint x="525" y="70" />
+        <di:waypoint x="575" y="175" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
